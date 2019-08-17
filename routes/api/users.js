@@ -8,10 +8,20 @@ const passport = require("passport");
 //get User model
 const User = require("../../models/User");
 
-//@route GET api/users/register
+//validation module
+const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
+
+//@route POST api/users/register
 //@desc Register users route
 //@access public
 router.post("/register", (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
       return res.status(400).json({
@@ -49,10 +59,16 @@ router.post("/register", (req, res) => {
   });
 });
 
-//@route GET api/users/login
+//@route POST api/users/login
 //@desc login users route
 //@access public
 router.post("/login", (req, res) => {
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   const email = req.body.email;
   const password = req.body.password;
 
