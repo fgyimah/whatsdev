@@ -4,12 +4,20 @@ require("dotenv").config();
 //import required dependencies
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const passport = require("passport");
 
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
 const posts = require("./routes/api/posts");
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+//passport middleware
+app.use(passport.initialize());
+require("./config/passport")(passport);
 
 //connect to mongodb
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
@@ -18,10 +26,6 @@ db.on("error", console.error.bind(console, "failed to connect to mongodb"));
 db.once("open", () => {
   console.log("Successfully connected to mongoDB");
 });
-
-// app.get("/", (req, res) => {
-//   res.send("Hello World");
-// });
 
 //routes
 app.use("/api/users", users);
