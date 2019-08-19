@@ -94,9 +94,10 @@ router.post("/login", (req, res) => {
           payload,
           process.env.secretOrKey,
           {
-            expiresIn: 3600 * 24
+            expiresIn: 604800
           },
           (err, token) => {
+            if (err) throw err;
             res.json({
               success: true,
               token: "Bearer " + token
