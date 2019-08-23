@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const cors = require("cors");
 
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
@@ -15,8 +16,11 @@ const posts = require("./routes/api/posts");
 const app = express();
 
 app.use(morgan("dev"));
+//parse incoming requests
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+//allow CORS headers
+app.use(cors());
 //passport middleware
 app.use(passport.initialize());
 require("./config/passport")(passport);

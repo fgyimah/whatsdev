@@ -35,7 +35,7 @@ router.get(
 );
 
 //@route GET api/profile/all
-//@desc get all proifiles
+//@desc get all profiles
 //@access Pulic
 router.get("/all", (req, res) => {
   let errors = {};
@@ -132,7 +132,7 @@ router.post(
     if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
 
-    Profile.findOneAndUpdate({ user: req.user.id }).then(profile => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
       if (profile) {
         //update
         Profile.findOneAndUpdate(
